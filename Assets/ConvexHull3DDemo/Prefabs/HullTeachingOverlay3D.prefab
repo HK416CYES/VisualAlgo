@@ -1,0 +1,453 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1448780388193588422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1051693116566802332}
+  - component: {fileID: 952342094656631186}
+  m_Layer: 0
+  m_Name: HullTeachingOverlay3D
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1051693116566802332
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448780388193588422}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1798857152529406459}
+  - {fileID: 6214247687904972570}
+  - {fileID: 8364839829375298207}
+  - {fileID: 1185943926373686810}
+  - {fileID: 2455359284776811467}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &952342094656631186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448780388193588422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8331a76c61a14d8a8dced3d4d5861b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConvexHullDemo3D.HullTeachingOverlay3D
+  accepted: {fileID: 6356605460837337369}
+  removing: {fileID: 1656357817205219320}
+  adding: {fileID: 3806668073660791421}
+  active: {fileID: 5815466842053021432}
+  projectionSurface: {fileID: 7120984527047961385}
+  projectionPlaneColor: {r: 0.62, g: 0.76, b: 0.85, a: 0.24}
+  linePrefab: {fileID: 8414459016712975546, guid: a3a72ef7c66564d13b956e63f95d1dcf, type: 3}
+  depthLineMaterial: {fileID: 2100000, guid: 17172bc90aef34c94bb4f12447201c01, type: 2}
+  xrayLineMaterial: {fileID: 2100000, guid: 0101ddc64a08d4c3e8ef469dc50550f4, type: 2}
+  edgeWidth: 0.025
+  markerRadius: 0.23
+  xrayAssistance: 1
+  boundaryColor: {r: 0.12, g: 0.42, b: 0.9, a: 1}
+  removeColor: {r: 0.95, g: 0.18, b: 0.12, a: 1}
+  addColor: {r: 0.15, g: 0.8, b: 0.32, a: 1}
+  candidateColor: {r: 1, g: 0.55, b: 0.05, a: 1}
+  horizonColor: {r: 1, g: 0.78, b: 0.06, a: 1}
+--- !u!1001 &1661232543419900484
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1051693116566802332}
+    m_Modifications:
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324433143361436388, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_Name
+      value: Current face
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324433143361436388, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+--- !u!4 &1185943926373686810 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+  m_PrefabInstance: {fileID: 1661232543419900484}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5815466842053021432 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5168252712742988988, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+  m_PrefabInstance: {fileID: 1661232543419900484}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde724353acc647cc83195406a9a83dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConvexHullDemo3D.HullSurface3D
+--- !u!1001 &2273861004653372837
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1051693116566802332}
+    m_Modifications:
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324433143361436388, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_Name
+      value: Accepted faces
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324433143361436388, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+--- !u!4 &1798857152529406459 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+  m_PrefabInstance: {fileID: 2273861004653372837}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6356605460837337369 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5168252712742988988, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+  m_PrefabInstance: {fileID: 2273861004653372837}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde724353acc647cc83195406a9a83dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConvexHullDemo3D.HullSurface3D
+--- !u!1001 &2696393693937633173
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1051693116566802332}
+    m_Modifications:
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324433143361436388, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_Name
+      value: Merge projection plane
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324433143361436388, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+--- !u!4 &2455359284776811467 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+  m_PrefabInstance: {fileID: 2696393693937633173}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7120984527047961385 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5168252712742988988, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+  m_PrefabInstance: {fileID: 2696393693937633173}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde724353acc647cc83195406a9a83dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConvexHullDemo3D.HullSurface3D
+--- !u!1001 &5856301145429635908
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1051693116566802332}
+    m_Modifications:
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324433143361436388, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_Name
+      value: Removed faces
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324433143361436388, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+--- !u!114 &1656357817205219320 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5168252712742988988, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+  m_PrefabInstance: {fileID: 5856301145429635908}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde724353acc647cc83195406a9a83dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConvexHullDemo3D.HullSurface3D
+--- !u!4 &6214247687904972570 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+  m_PrefabInstance: {fileID: 5856301145429635908}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8317394265703552705
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1051693116566802332}
+    m_Modifications:
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324433143361436388, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_Name
+      value: New faces
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324433143361436388, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+--- !u!114 &3806668073660791421 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5168252712742988988, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+  m_PrefabInstance: {fileID: 8317394265703552705}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde724353acc647cc83195406a9a83dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConvexHullDemo3D.HullSurface3D
+--- !u!4 &8364839829375298207 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 538377543054900318, guid: 4aef0bb6e2af0447d93a817cc697a925, type: 3}
+  m_PrefabInstance: {fileID: 8317394265703552705}
+  m_PrefabAsset: {fileID: 0}

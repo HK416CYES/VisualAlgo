@@ -1,0 +1,16 @@
+using System;using System.Linq;using System.Threading.Tasks;using UnityEngine;using UnityEngine.UI;using UnityEngine.EventSystems;using UnityEngine.SceneManagement;using UnityEditor;using VisualAlgo.StartMenu;
+public static class VerifyUnifiedStartMenu {
+ static int checks;static void Check(bool b,string m){checks++;if(!b)throw new Exception(m);}
+ static void Click(Button b){Canvas.ForceUpdateCanvases();var r=(RectTransform)b.transform;var canvas=b.GetComponentInParent<Canvas>().rootCanvas;var pos=RectTransformUtility.WorldToScreenPoint(canvas.worldCamera,r.TransformPoint(r.rect.center));var e=new PointerEventData(EventSystem.current){position=pos,button=PointerEventData.InputButton.Left};var hits=new System.Collections.Generic.List<RaycastResult>();EventSystem.current.RaycastAll(e,hits);Check(hits.Count>0,"Raycast hits "+b.name);Check(ExecuteEvents.ExecuteHierarchy(hits[0].gameObject,e,ExecuteEvents.pointerClickHandler)==b.gameObject,"Correct button "+b.name);}
+ static async Task Focus(){var window=EditorWindow.GetWindow(typeof(Editor).Assembly.GetType("UnityEditor.GameView"));window.Focus();window.Repaint();EditorApplication.QueuePlayerLoopUpdate();UnityEditorInternal.InternalEditorUtility.RepaintAllViews();await Task.Delay(600);}
+ public static async Task<object> Run(){checks=0;if(!Application.isPlaying)throw new Exception("Play first");bool background=Application.runInBackground;Application.runInBackground=true;try{await Focus();
+  UnityEngine.Object.FindFirstObjectByType<StartMenuBootstrap>().CloseDialog();await Focus();
+  var panel=UnityEngine.Object.FindFirstObjectByType<StartMenuPanel>();Check(panel!=null&&panel.IsVisible,"UIFramework main panel visible");Check(UnityEngine.Object.FindObjectsByType<EventSystem>(FindObjectsSortMode.None).Length==1,"One EventSystem");
+  Click(panel.credits);await Focus();var dialog=UnityEngine.Object.FindFirstObjectByType<StartMenuDialog>();Check(dialog!=null&&dialog.IsVisible,"Credits visible");Check(dialog.body.text.Contains("HK416-C"),"Original credit preserved");Check(!panel.GetComponent<CanvasGroup>().interactable,"Main menu blocked");Check(!dialog.confirm.gameObject.activeSelf,"Credits cannot quit");Click(dialog.close);await Focus();Check(!dialog.IsVisible&&panel.GetComponent<CanvasGroup>().interactable,"Close restores menu");
+  Click(panel.quit);await Focus();Check(dialog.IsVisible&&dialog.confirm.gameObject.activeSelf,"Quit confirmation");Click(dialog.cancel);await Focus();Check(!dialog.IsVisible,"Cancel quit");
+  string[] scenes={"01-Sort","02-GridMapNav","03-BinaryTree","ConvexHullDemo","ConvexHull3DDemo"};
+  for(int i=0;i<scenes.Length;i++){await Focus();panel=UnityEngine.Object.FindFirstObjectByType<StartMenuPanel>();Click(panel.entries[i]);await Focus();Check(SceneManager.GetActiveScene().name==scenes[i],"Correct destination "+scenes[i]);Check(Camera.main!=null&&EventSystem.current!=null,"Destination initialized");SceneManager.LoadScene(0);await Focus();Check(UnityEngine.Object.FindFirstObjectByType<StartMenuPanel>()!=null,"Return to new menu");}
+  return new{passed=true,checks,scenes=5,framework="UISetting + UIFrame + PanelController"};}finally{Application.runInBackground=background;}
+ }
+ public static async Task<string> Credits(){await Focus();Click(UnityEngine.Object.FindFirstObjectByType<StartMenuPanel>().credits);return "credits opened";}
+}

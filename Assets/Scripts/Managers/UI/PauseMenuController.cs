@@ -62,6 +62,10 @@ namespace VisualAlgo.Managers.UI
         /// 当前游戏是否处于暂停状态。
         /// </summary>
         private bool isPaused;
+        public bool IsPaused => isPaused;
+        public event System.Action<bool> PauseChanged;
+        public event System.Action<float> ZoomSensitivityChanged;
+        public float ZoomSensitivity => cachedSettings.ZoomSensitivity;
 
         /// <summary>
         /// 当前缓存的玩家 UI 配置。
@@ -283,6 +287,7 @@ namespace VisualAlgo.Managers.UI
             isPaused = paused;
             Time.timeScale = paused ? 0f : 1f;
             if (pausePanel != null) pausePanel.SetActive(paused);
+            PauseChanged?.Invoke(paused);
         }
 
         /// <summary>
@@ -323,6 +328,7 @@ namespace VisualAlgo.Managers.UI
         {
             if (cameraManager != null) cameraManager.ZoomSensitivity = value;
             cachedSettings.ZoomSensitivity = cameraManager != null ? cameraManager.ZoomSensitivity : value;
+            ZoomSensitivityChanged?.Invoke(cachedSettings.ZoomSensitivity);
             SaveSettings();
         }
 

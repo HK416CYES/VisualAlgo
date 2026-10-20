@@ -1,0 +1,24 @@
+using System;using System.Linq;using System.Reflection;using System.Threading.Tasks;using UnityEngine;using UnityEngine.InputSystem;using UnityEngine.InputSystem.LowLevel;using UnityEngine.SceneManagement;using UnityEngine.UI;using UnityEngine.EventSystems;using UnityEditor;using VisualAlgo.Managers.UI;using ConvexHullDemo;using ConvexHullDemo3D;using UIFramework;
+public static class VerifyHullNavigation {
+ static int checks;static void Check(bool b,string s){checks++;if(!b)throw new Exception(s);}
+ static T Field<T>(object o,string name)=>(T)o.GetType().GetField(name,BindingFlags.NonPublic|BindingFlags.Instance).GetValue(o);
+ static void Escape(PauseMenuController menu,Keyboard keyboard){InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Escape));InputSystem.Update();menu.SendMessage("Update");var a=UnityEngine.Object.FindFirstObjectByType<ConvexHullDemoController>();var b=UnityEngine.Object.FindFirstObjectByType<ConvexHull3DController>();if(a)a.SendMessage("Update");if(b)b.SendMessage("Update");InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();}
+ static void Click(Button button){Canvas.ForceUpdateCanvases();var r=(RectTransform)button.transform;var canvas=button.GetComponentInParent<Canvas>().rootCanvas;var at=RectTransformUtility.WorldToScreenPoint(canvas.renderMode==RenderMode.ScreenSpaceOverlay?null:canvas.worldCamera,r.TransformPoint(r.rect.center));var data=new PointerEventData(EventSystem.current){position=at,button=PointerEventData.InputButton.Left};var hits=new System.Collections.Generic.List<RaycastResult>();EventSystem.current.RaycastAll(data,hits);Check(hits.Count>0,"Button raycast "+button.name);Check(ExecuteEvents.ExecuteHierarchy(hits[0].gameObject,data,ExecuteEvents.pointerClickHandler)==button.gameObject,"Top raycast targets button "+button.name);}
+ public static async Task<object> Run(){checks=0;Check(Application.isPlaying,"Play mode required");EditorWindow.GetWindow(typeof(Editor).Assembly.GetType("UnityEditor.GameView")).Focus();await Task.Delay(300);
+  var oldMode=InputSystem.settings.updateMode;var oldKeyboard=Keyboard.current;var keyboard=InputSystem.AddDevice<Keyboard>();keyboard.MakeCurrent();InputSystem.settings.updateMode=InputSettings.UpdateMode.ProcessEventsManually;
+  try{for(int dimension=2;dimension<=3;dimension++){
+   EditorWindow.GetWindow(typeof(Editor).Assembly.GetType("UnityEditor.GameView")).Focus();await Task.Delay(300);
+   Click(GameObject.Find("Btn_ConvexHull"+dimension+"DScene").GetComponent<Button>());await Task.Delay(250);Check(SceneManager.GetActiveScene().name==(dimension==2?"ConvexHullDemo":"ConvexHull3DDemo"),"Correct scene loaded");
+   var menu=UnityEngine.Object.FindFirstObjectByType<PauseMenuController>();var a=UnityEngine.Object.FindFirstObjectByType<ConvexHullDemoController>();var b=UnityEngine.Object.FindFirstObjectByType<ConvexHull3DController>();var panel=Field<GameObject>(menu,"pausePanel");Check(!menu.IsPaused&&!panel.activeSelf,"Starts resumed");
+   if(a)a.HideHelp();string error;if(a)Check(a.playback.Play(out error),"2D playback start");else Check(b.playback.Play(out error),"3D playback start");
+   Escape(menu,keyboard);Check(menu.IsPaused&&Time.timeScale==0&&panel.activeInHierarchy,"ESC opens menu");Check(a?a.playback.IsActive:b.playback.IsActive,"ESC preserves teaching session");
+   var camera=a?a.worldCamera:b.worldCamera;var pos=camera.transform.position;var rot=camera.transform.rotation;int step=a?a.playback.StepIndex:b.playback.Session.VisibleSteps;
+   if(a)a.playback.Tick(100);else b.playback.Tick(100);await Task.Delay(150);Check(step==(a?a.playback.StepIndex:b.playback.Session.VisibleSteps),"Teaching frozen");Check(camera.transform.position==pos&&camera.transform.rotation==rot,"Camera frozen");
+   var group=UnityEngine.Object.FindFirstObjectByType<UIFrame>().GetComponent<CanvasGroup>();Check(!group.interactable&&!group.blocksRaycasts,"Underlying UI blocked");
+   Escape(menu,keyboard);Check(!menu.IsPaused&&Time.timeScale==1&&!panel.activeSelf,"ESC resumes");Check(a?a.playback.IsActive:b.playback.IsActive,"Resume does not stop animation");Check(group.interactable&&group.blocksRaycasts,"UI restored");
+   if(a)a.playback.Pause();else if(!b.playback.IsPaused)b.playback.TogglePause();Escape(menu,keyboard);Click(Field<Button>(menu,"resumeButton"));Check(!menu.IsPaused&&(a?a.playback.IsPaused:b.playback.IsPaused),"Resume button preserves manually paused algorithm");
+   Escape(menu,keyboard);Click(Field<Button>(menu,"mainMenuButton"));await Task.Delay(250);Check(SceneManager.GetActiveScene().buildIndex==0&&Time.timeScale==1,"Return to menu resets pause");
+  }return new{passed=true,checks};
+  }finally{InputSystem.RemoveDevice(keyboard);if(oldKeyboard!=null)oldKeyboard.MakeCurrent();InputSystem.settings.updateMode=oldMode;}
+ }
+}

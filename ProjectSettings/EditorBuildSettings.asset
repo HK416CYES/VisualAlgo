@@ -17,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/03-BinaryTree.unity
     guid: 1fe440cba25821f47baf5a6b80daa832
+  - enabled: 1
+    path: Assets/Scenes/ConvexHullDemo.unity
+    guid: 898804a3303054f56bbfca86c29c31d6
+  - enabled: 1
+    path: Assets/Scenes/ConvexHull3DDemo.unity
+    guid: ba1cad2397ec846228b3c32700c43b83
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

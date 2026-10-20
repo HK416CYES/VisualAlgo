@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
         if (Instance == this) Instance = null;
     }
 
+    public void Btn_ConvexHull2DScene() => UnityEngine.SceneManagement.SceneManager.LoadScene("ConvexHullDemo");
+    public void Btn_ConvexHull3DScene() => UnityEngine.SceneManagement.SceneManager.LoadScene("ConvexHull3DDemo");
+
     public void Btn_SortScene()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
