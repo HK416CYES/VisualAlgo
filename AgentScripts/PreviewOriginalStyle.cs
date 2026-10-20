@@ -1,0 +1,4 @@
+using System;using System.Threading.Tasks;using UnityEditor;using UnityEngine;using UnityEngine.UI;using VisualAlgo.StartMenu;
+public static class PreviewOriginalStyle {
+ public static async Task<object> Run(){bool bg=Application.runInBackground;Application.runInBackground=true;try{var view=EditorWindow.GetWindow(typeof(Editor).Assembly.GetType("UnityEditor.GameView"));view.Focus();view.Repaint();EditorApplication.QueuePlayerLoopUpdate();await Task.Delay(1200);var p=UnityEngine.Object.FindFirstObjectByType<StartMenuPanel>();var c=p.GetComponentInParent<Canvas>().rootCanvas;return new{screen=new[]{Screen.width,Screen.height},canvas=((RectTransform)c.transform).rect.ToString(),pixel=c.pixelRect.ToString(),layout=p.GetComponent<StartMenuResponsive>().layout.sizeDelta.ToString(),positions=Array.ConvertAll(p.entries,b=>b.GetComponent<RectTransform>().anchoredPosition.ToString())};}finally{Application.runInBackground=bg;}}
+}

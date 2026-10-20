@@ -28,7 +28,7 @@
 原 Renderer2D 仍为默认索引 0；凸包场景相机和两套 UI Frame 相机显式使用索引 1，以支持三维透明面和 URP UI 相机叠加。
 不要删除该渲染器槽位，否则凸包相机会退回默认 2D 渲染器。
 
-主菜单已使用 UIFramework 统一重制：五张实验卡片、侧栏关于与退出，宽屏分区布局、窄窗口两列布局，详见 `Assets/StartMenu/README.md`。两个场景追加到 Build Settings，原场景序号 0–3 保持不变。未构建 Player。
+主菜单使用 UIFramework，复用原版背景与标题字，重制五个算法切角按钮及制作人、退出按钮；宽屏一排五个入口，窄窗口三加二排列。详见 `Assets/StartMenu/README.md`。两个场景追加到 Build Settings，原场景序号 0–3 保持不变。未构建 Player。
 
 两个凸包场景通过 `HullPauseIntegration` 接入 `Assets/Perfabs/ESC Pause Panel.prefab`。ESC 打开或关闭场景暂停菜单，冻结相机、点输入和演示计时；恢复时保留演示原有播放/暂停状态。支持返回游戏、返回主菜单和退出。二维缩放灵敏度绑定原菜单滑条；三维无滚轮缩放，滑条禁用。
 

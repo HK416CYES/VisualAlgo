@@ -16,6 +16,8 @@ public static class FinishUnifiedMenu {
  }
  public static string Cleanup() {
  if(EditorApplication.isPlaying)throw new Exception("Exit Play Mode first");
+ AssetDatabase.DeleteAsset("Assets/OriginalMenuReview.png");AssetDatabase.DeleteAsset("Assets/OriginalStyleCredits.png");
+ if(AssetDatabase.LoadMainAssetAtPath("Assets/OriginalStyleNarrow.png")){AssetDatabase.DeleteAsset("Assets/StartMenu/PreviewNarrow.png");AssetDatabase.MoveAsset("Assets/OriginalStyleNarrow.png","Assets/StartMenu/PreviewNarrow.png");}
  AssetDatabase.DeleteAsset("Assets/UnifiedMenuPreview.png");AssetDatabase.DeleteAsset("Assets/UnifiedCreditsPreview.png");AssetDatabase.DeleteAsset("Assets/UnifiedMenuNarrow.png");
  AssetDatabase.ImportPackage("/private/tmp/visualalgo-original-assets.unitypackage",false);
  AssetDatabase.Refresh();return "Temporary previews removed; original cached assets restored";
