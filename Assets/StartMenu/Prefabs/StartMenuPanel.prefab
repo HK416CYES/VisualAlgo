@@ -706,7 +706,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3798027433538989084}
   - component: {fileID: 6028524567822181015}
-  - component: {fileID: 8504099609334367257}
+  - component: {fileID: 7726429239738731885}
   m_Layer: 5
   m_Name: Algorithm symbol
   m_TagString: Untagged
@@ -741,7 +741,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1907212545408003233}
   m_CullTransparentMesh: 1
---- !u!114 &8504099609334367257
+--- !u!114 &7726429239738731885
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -750,9 +750,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1907212545408003233}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da1cfaf33a3b94bfdacbba8ee56c5347, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ad48c0ec84e44d0eb4d54a4331e2014, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VisualAlgo.StartMenu.MenuGraphic
+  m_EditorClassIdentifier: Assembly-CSharp::VisualAlgo.StartMenu.HullMenuPreview
   m_Material: {fileID: 0}
   m_Color: {r: 0.84, g: 0.48, b: 0.16, a: 1}
   m_RaycastTarget: 0
@@ -761,9 +761,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  shape: 5
-  radius: 16
-  faint: {r: 0.16, g: 0.17, b: 0.18, a: 1}
+  spatial: 1
+  movingPointColor: {r: 0.85, g: 0.08, b: 0.48, a: 1}
+  interiorColor: {r: 0.16, g: 0.17, b: 0.18, a: 1}
+  progress: 0
 --- !u!1 &2568780240383311869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1437,8 +1438,6 @@ MonoBehaviour:
   purpleOutlineThickness: 2.2
   edgeThickness: 4
   padding: 10
-  edgeEnterSpeed: 1.55
-  edgeExitSpeed: 1.55
   progress: 0
 --- !u!1 &5054277406048267539
 GameObject:
@@ -2284,6 +2283,7 @@ GameObject:
   - component: {fileID: 745009007103776381}
   - component: {fileID: 3976295508635232748}
   - component: {fileID: 2956142266059064403}
+  - component: {fileID: 1458100282717080536}
   m_Layer: 5
   m_Name: Btn_ConvexHull3DScene
   m_TagString: Untagged
@@ -2388,6 +2388,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1458100282717080536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6989317346378205332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f12ecfe67aa7c4debbfd2f3e6096c544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VisualAlgo.StartMenu.HullMenuHover
+  preview: {fileID: 7726429239738731885}
+  smoothTime: 0.3
 --- !u!1 &7024122460750515046
 GameObject:
   m_ObjectHideFlags: 0
@@ -2473,7 +2487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1374111995998344510}
   - component: {fileID: 9041998877293617319}
-  - component: {fileID: 1837977527753774265}
+  - component: {fileID: 6934312086172742078}
   m_Layer: 5
   m_Name: Algorithm symbol
   m_TagString: Untagged
@@ -2508,7 +2522,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7488396145079856660}
   m_CullTransparentMesh: 1
---- !u!114 &1837977527753774265
+--- !u!114 &6934312086172742078
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2517,9 +2531,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7488396145079856660}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da1cfaf33a3b94bfdacbba8ee56c5347, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ad48c0ec84e44d0eb4d54a4331e2014, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VisualAlgo.StartMenu.MenuGraphic
+  m_EditorClassIdentifier: Assembly-CSharp::VisualAlgo.StartMenu.HullMenuPreview
   m_Material: {fileID: 0}
   m_Color: {r: 0.22, g: 0.46, b: 0.82, a: 1}
   m_RaycastTarget: 0
@@ -2528,9 +2542,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  shape: 4
-  radius: 16
-  faint: {r: 0.16, g: 0.17, b: 0.18, a: 1}
+  spatial: 0
+  movingPointColor: {r: 0.85, g: 0.08, b: 0.48, a: 1}
+  interiorColor: {r: 0.16, g: 0.17, b: 0.18, a: 1}
+  progress: 0
 --- !u!1 &7565911828988720496
 GameObject:
   m_ObjectHideFlags: 0
@@ -3193,6 +3208,7 @@ GameObject:
   - component: {fileID: 4578578565822945593}
   - component: {fileID: 6053127081774334858}
   - component: {fileID: 1710341038488632102}
+  - component: {fileID: 6409697544795270874}
   m_Layer: 5
   m_Name: Btn_ConvexHull2DScene
   m_TagString: Untagged
@@ -3297,3 +3313,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6409697544795270874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8885926409859979943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f12ecfe67aa7c4debbfd2f3e6096c544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VisualAlgo.StartMenu.HullMenuHover
+  preview: {fileID: 6934312086172742078}
+  smoothTime: 0.3

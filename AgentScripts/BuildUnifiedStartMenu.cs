@@ -27,7 +27,7 @@ public static class BuildUnifiedStartMenu {
  }
  static Button Experiment(Transform parent,int index,string name,string title,string english,MenuGraphic.Shape shape,Color accent){var b=Button(name,parent,210+index*304,420,284,365,accent);
  var number=Text("Number",b.transform,"0"+(index+1),26,23,60,28,19,new Color(.42f,.44f,.45f));
- var art=Rect("Algorithm symbol",b.transform,0,0,0,0);Relative(art,new Vector2(.19f,.42f),new Vector2(.81f,.84f),Vector2.zero,Vector2.zero);if(index<3)OriginalAnimation(b,art,index);else {var g=art.gameObject.AddComponent<MenuGraphic>();g.shape=shape;g.color=accent;g.faint=new Color(.16f,.17f,.18f);g.raycastTarget=false;}
+ var art=Rect("Algorithm symbol",b.transform,0,0,0,0);Relative(art,new Vector2(.19f,.42f),new Vector2(.81f,.84f),Vector2.zero,Vector2.zero);if(index<3)OriginalAnimation(b,art,index);else {var g=art.gameObject.AddComponent<HullMenuPreview>();g.spatial=index==4;g.color=accent;g.raycastTarget=false;b.gameObject.AddComponent<HullMenuHover>().preview=g;}
  var label=Text("Title",b.transform,title,0,0,0,0,34,Ink,TextAnchor.MiddleCenter);label.fontStyle=FontStyle.Bold;Relative(label.rectTransform,new Vector2(0,.24f),new Vector2(1,.39f),new Vector2(15,0),new Vector2(-15,0));
  var sub=Text("Subtitle",b.transform,english,0,0,0,0,12,new Color(.42f,.45f,.46f),TextAnchor.MiddleCenter);Relative(sub.rectTransform,new Vector2(0,.18f),new Vector2(1,.24f),Vector2.zero,Vector2.zero);
  var play=Text("Play",b.transform,"▶",0,0,0,0,25,accent,TextAnchor.MiddleCenter);Relative(play.rectTransform,new Vector2(.3f,.055f),new Vector2(.7f,.16f),Vector2.zero,Vector2.zero);return b;}
