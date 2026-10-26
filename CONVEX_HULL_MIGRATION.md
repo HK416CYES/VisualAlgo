@@ -11,7 +11,7 @@
 - `Assets/Scenes/ConvexHull3DDemo.unity`：三维点编辑、实时凸包和四种教学演示。
 
 二维：左键拖动画布，点选后拖动点，右键打开新建/删除菜单，滚轮缩放；左下角问号可打开操作说明。
-三维：右键按住并移动鼠标转向，WASD/QE 沿相机局部坐标移动；左键选点后拖动 XYZ 轴，Delete 删除。
+三维：右键按住并移动鼠标转向，WASD/QE 沿相机局部坐标移动；左键选点后拖动 XYZ 轴，Delete 删除；在任意点上右键单击即可选中该点，显示与二维场景同样式的“删除点”菜单。菜单外左键、暂停、失焦和点集替换均会关闭菜单。右键拖动超过 4 像素或按移动键仍进入相机漫游，演示期间不允许删除。
 顶部可随机生成点集并选择算法播放；底部可暂停、单步、停止和调速。
 
 ## 资源和依赖
@@ -59,3 +59,5 @@
 验证脚本 `VerifyHullNavigation.Run` 覆盖两个入口、暂停 UI 射线、ESC 开关、冻结演示和相机、恢复原状态以及返回主菜单。`VerifyHullEscapeLive.Begin` 在正常 PlayerLoop 中注入 ESC，验证打开、关闭和重新打开。原三个菜单入口继续由 `VerifyVisualAlgoMigration.ExistingScenes` 回归检查。
 
 接入完成后的复测：39 项入口与暂停检查通过；二维、三维均通过正常游戏帧 ESC 打开/关闭/重开测试；排序、寻路、二叉树原有入口回归通过。两个新场景的 Build Index 为 4、5，已保存到 ProjectSettings。退出 Play Mode 后恢复主菜单，并移除测试截图及无关字体缓存改动。
+
+三维右键菜单：`BuildHull3DContextMenu.Run` 制作并注册菜单 Prefab；`VerifyHull3DContextMenu.Run` 验证右键单击、真实菜单射线删除、凸包刷新、相机手势与暂停/演示锁定。

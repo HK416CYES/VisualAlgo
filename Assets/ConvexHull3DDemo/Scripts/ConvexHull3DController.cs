@@ -9,6 +9,10 @@ using UnityEngine.UI;
 namespace ConvexHullDemo3D {
     [DefaultExecutionOrder(-50)]
     public sealed class ConvexHull3DController : MonoBehaviour {
+        public const string MenuId="HullContextMenu3D";
+        public HullContextMenu3D ContextMenu {get;private set;}
+        public bool IsMenuOpen=>ContextMenu!=null&&ContextMenu.IsVisible;
+        int? contextId,rightPointId;Vector2 rightStart;bool rightPending;
         public const string ToolbarId="HullToolbar3D";
         public Camera worldCamera;
         public UISetting uiSetting;
@@ -48,9 +52,9 @@ namespace ConvexHullDemo3D {
         public event Action Changed;
         static bool Finite(Vector3 p)=>!(float.IsNaN(p.x)||float.IsNaN(p.y)||float.IsNaN(p.z)||float.IsInfinity(p.x)||float.IsInfinity(p.y)||float.IsInfinity(p.z));
         void Awake(){Cursor.visible=true;Cursor.lockState=CursorLockMode.None;foreach(var view in previewPoints){view.gameObject.SetActive(false);pool.Push(view);}foreach(var p in initialPoints)AddPoint(p,false);FlushChanges();SyncAngles();gizmo.gameObject.SetActive(false);}
-        void Start(){frame=uiSetting.CreateUIInstance();Toolbar=frame.GetComponentInChildren<HullToolbar3D>(true);Toolbar.Bind(this);frame.ShowPanel(ToolbarId);if(playback!=null){PlaybackPanel=frame.GetComponentInChildren<HullPlaybackPanel3D>(true);PlaybackPanel.Bind(playback,worldCamera);playback.Changed+=RefreshPlaybackPanel;}}
+        void Start(){frame=uiSetting.CreateUIInstance();Toolbar=frame.GetComponentInChildren<HullToolbar3D>(true);Toolbar.Bind(this);ContextMenu=frame.GetComponentInChildren<HullContextMenu3D>(true);if(ContextMenu)ContextMenu.Bind(this);frame.ShowPanel(ToolbarId);if(playback!=null){PlaybackPanel=frame.GetComponentInChildren<HullPlaybackPanel3D>(true);PlaybackPanel.Bind(playback,worldCamera);playback.Changed+=RefreshPlaybackPanel;}}
         void RefreshPlaybackPanel(){if(frame==null||PlaybackPanel==null)return;if(playback.IsActive){if(!PlaybackPanel.IsVisible)frame.ShowPanel(PlaybackPanel.ScreenId);}else if(PlaybackPanel.IsVisible)PlaybackPanel.Hide();}
-        public void SetTeachingMode(bool active){if(active&&Toolbar!=null)Toolbar.countInput.DeactivateInputField();IsTeaching=active;dragAxis=-1;selected=null;surface.gameObject.SetActive(!active);UpdateAppearance();UpdateGizmo();Changed?.Invoke();}
+        public void SetTeachingMode(bool active){CloseMenu();rightPending=false;if(active&&Toolbar!=null)Toolbar.countInput.DeactivateInputField();IsTeaching=active;dragAxis=-1;selected=null;surface.gameObject.SetActive(!active);UpdateAppearance();UpdateGizmo();Changed?.Invoke();}
         void OnDestroy(){if(playback!=null)playback.Changed-=RefreshPlaybackPanel;}
         void SyncAngles(){yaw=worldCamera.transform.eulerAngles.y;pitch=worldCamera.transform.eulerAngles.x;if(pitch>180)pitch-=360;}
         bool InputFocused=>EventSystem.current!=null&&EventSystem.current.currentSelectedGameObject!=null&&EventSystem.current.currentSelectedGameObject.GetComponentInParent<InputField>() is InputField input&&input.isFocused;
@@ -60,19 +64,36 @@ namespace ConvexHullDemo3D {
         void Update(){
             if (IsScenePaused || (UsesPauseMenu && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)) return;
             var mouse=Mouse.current;var keyboard=Keyboard.current;if(mouse==null)return;Vector2 screen=mouse.position.ReadValue();
-            if(mouse.rightButton.wasPressedThisFrame)BeginFly(screen);
-            if(mouse.rightButton.wasReleasedThisFrame)EndFly();
-            if(flyActive&&mouse.rightButton.isPressed&&!InputFocused){Vector3 movement=Vector3.zero;if(keyboard!=null){movement.x=(keyboard.dKey.isPressed?1:0)-(keyboard.aKey.isPressed?1:0);movement.y=(keyboard.eKey.isPressed?1:0)-(keyboard.qKey.isPressed?1:0);movement.z=(keyboard.wKey.isPressed?1:0)-(keyboard.sKey.isPressed?1:0);}Fly(mouse.delta.ReadValue(),movement,Time.unscaledDeltaTime);}
+            if(mouse.rightButton.wasPressedThisFrame)BeginRight(screen);
+            Vector3 movement=Vector3.zero;if(keyboard!=null&&!InputFocused){movement.x=(keyboard.dKey.isPressed?1:0)-(keyboard.aKey.isPressed?1:0);movement.y=(keyboard.eKey.isPressed?1:0)-(keyboard.qKey.isPressed?1:0);movement.z=(keyboard.wKey.isPressed?1:0)-(keyboard.sKey.isPressed?1:0);}
+            if(mouse.rightButton.isPressed){ContinueRight(screen,movement);if(flyActive&&!InputFocused)Fly(mouse.delta.ReadValue(),movement,Time.unscaledDeltaTime);}
+            if(mouse.rightButton.wasReleasedThisFrame)EndRight(screen);
+            if(mouse.leftButton.wasPressedThisFrame&&IsMenuOpen&&!ContextMenu.Contains(screen))CloseMenu();
             if(!flyActive){if(mouse.leftButton.wasPressedThisFrame)BeginLeft(screen);if(mouse.leftButton.isPressed)Drag(screen);if(mouse.leftButton.wasReleasedThisFrame)EndDrag();}
             if(keyboard!=null&&!InputFocused&&keyboard.escapeKey.wasPressedThisFrame&&IsTeaching)playback.Stop();
             if(keyboard!=null&&!IsTeaching&&!InputFocused&&keyboard.deleteKey.wasPressedThisFrame&&selected.HasValue)RemovePoint(selected.Value);
         }
         void LateUpdate(){FlushChanges();UpdateGizmo();}
         public bool PointerOverUI(Vector2 screen){if(EventSystem.current==null)return false;uiHits.Clear();EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current){position=screen},uiHits);return uiHits.Count>0;}
+        // 在任意节点上右键单击选中并打开菜单；拖动超过 4 像素或按移动键则继续相机漫游。
+        public void BeginRight(Vector2 screen){
+            rightPending=false;if(IsScenePaused||PointerOverUI(screen)||InputFocused||dragAxis>=0||!worldCamera.pixelRect.Contains(screen))return;
+            CloseMenu();rightStart=screen;rightPointId=HitTest(screen);
+            if(!IsTeaching&&rightPointId.HasValue)rightPending=true;else BeginFly(screen);
+        }
+        public void ContinueRight(Vector2 screen,Vector3 movement){if(!rightPending)return;if((screen-rightStart).sqrMagnitude>16||movement.sqrMagnitude>0){rightPending=false;BeginFly(rightStart);}}
+        public void EndRight(Vector2 screen){bool open=rightPending&&(screen-rightStart).sqrMagnitude<=16&&HitTest(screen)==rightPointId;rightPending=false;EndFly();if(open)OpenContextMenu(screen);}
+        public bool OpenContextMenu(Vector2 screen){
+            if(IsScenePaused||IsTeaching||ContextMenu==null||PointerOverUI(screen))return false;
+            var hit=HitTest(screen);if(!hit.HasValue)return false;
+            EndFly();dragAxis=-1;Select(hit);contextId=hit;frame.ShowPanel(MenuId);ContextMenu.PositionAt(screen);return true;
+        }
+        public void CloseMenu(){contextId=null;if(IsMenuOpen)frame.HidePanel(MenuId);}
+        public void DeleteContextPoint(){if(IsScenePaused||IsTeaching){CloseMenu();return;}var id=contextId;CloseMenu();if(id.HasValue)RemovePoint(id.Value);}
         public void BeginFly(Vector2 screen){if(dragAxis>=0||PointerOverUI(screen)||InputFocused||!worldCamera.pixelRect.Contains(screen))return;SyncAngles();flyActive=true;}
         public void EndFly(){flyActive=false;}
         public void Fly(Vector2 delta,Vector3 localMovement,float seconds){if(!flyActive||dragAxis>=0||InputFocused)return;yaw+=delta.x*lookSensitivity;pitch=Mathf.Clamp(pitch-delta.y*lookSensitivity,-89,89);worldCamera.transform.rotation=Quaternion.Euler(pitch,yaw,0);worldCamera.transform.position+=worldCamera.transform.TransformDirection(Vector3.ClampMagnitude(localMovement,1))*moveSpeed*Mathf.Max(0,seconds);}
-        public void CancelGestures(){flyActive=false;dragAxis=-1;}
+        public void CancelGestures(){flyActive=false;dragAxis=-1;rightPending=false;CloseMenu();}
         void OnApplicationFocus(bool focus){if(!focus)CancelGestures();}
         void OnDisable(){CancelGestures();}
         public int? HitTest(Vector2 screen){Ray ray=worldCamera.ScreenPointToRay(screen);int? best=null;float nearest=float.PositiveInfinity;float radius=Mathf.Max(hitRadius,pointDiameter*.5f);
@@ -80,7 +101,7 @@ namespace ConvexHullDemo3D {
                 bool tied=Mathf.Abs(distance-nearest)<.00001f;if(distance<nearest-.00001f||(tied&&(p.Id==selected||(best!=selected&&(!best.HasValue||p.Id>best.Value))))){best=p.Id;nearest=distance;}}
             return best;
         }
-        public void Select(int? id){if(IsTeaching)return;selected=Find(id)!=null?id:null;UpdateAppearance();UpdateGizmo();Changed?.Invoke();}
+        public void Select(int? id){if(IsTeaching)return;CloseMenu();selected=Find(id)!=null?id:null;UpdateAppearance();UpdateGizmo();Changed?.Invoke();}
         public void BeginLeft(Vector2 screen){if(IsTeaching)return;if(flyActive||PointerOverUI(screen)||!worldCamera.pixelRect.Contains(screen))return;var point=Find(selected);
             if(point!=null){UpdateGizmo();int axis=gizmo.Hit(worldCamera.ScreenPointToRay(screen),point.Position,axisLength,axisHitRadius);if(axis>=0&&BeginAxisDrag(axis,screen))return;}
             Select(HitTest(screen));
