@@ -9,7 +9,7 @@ namespace VisualAlgo.Managers.UI.StartMenu
     public sealed class StartMenuBinaryTreePreviewGraphic : MaskableGraphic
     {
         /// <summary>
-        /// 紫色节点颜色。
+        /// 紫色节点颜色；为配合按钮主题，紫色代表红黑树中的红节点。
         /// </summary>
         [SerializeField] private Color purpleNodeColor = new(0.53f, 0.34f, 0.78f, 1f);
 
@@ -43,15 +43,6 @@ namespace VisualAlgo.Managers.UI.StartMenu
         /// </summary>
         [SerializeField, Min(0f)] private float padding = 10f;
 
-        /// <summary>
-        /// 边线进入完成态时的提前速度倍率。
-        /// </summary>
-        [SerializeField, Min(0.1f)] private float edgeEnterSpeed = 1.55f;
-
-        /// <summary>
-        /// 边线离开起始态时的提前速度倍率。
-        /// </summary>
-        [SerializeField, Min(0.1f)] private float edgeExitSpeed = 1.55f;
 
         /// <summary>
         /// 当前从未调整态过渡到调整态的进度。
@@ -114,13 +105,8 @@ namespace VisualAlgo.Managers.UI.StartMenu
         /// </summary>
         private static readonly Vector2[] StartNodeAnchors =
         {
-            new(0.54f, 0.84f),
-            new(0.38f, 0.62f),
-            new(0.76f, 0.62f),
-            new(0.24f, 0.40f),
-            new(0.52f, 0.40f),
-            new(0.12f, 0.18f),
-            new(0.88f, 0.40f)
+            new(0.625f, 0.18f), new(0.375f, 0.40f), new(0.75f, 0.40f),
+            new(0.25f, 0.84f), new(0.50f, 0.62f), new(0.125f, 0.62f), new(0.875f, 0.18f)
         };
 
         /// <summary>
@@ -128,13 +114,8 @@ namespace VisualAlgo.Managers.UI.StartMenu
         /// </summary>
         private static readonly Vector2[] EndNodeAnchors =
         {
-            new(0.70f, 0.62f),
-            new(0.50f, 0.84f),
-            new(0.82f, 0.40f),
-            new(0.30f, 0.62f),
-            new(0.42f, 0.40f),
-            new(0.18f, 0.40f),
-            new(0.58f, 0.40f)
+            new(0.625f, 0.20f), new(0.375f, 0.20f), new(0.75f, 0.52f),
+            new(0.25f, 0.52f), new(0.50f, 0.84f), new(0.125f, 0.20f), new(0.875f, 0.20f)
         };
 
         /// <summary>
@@ -142,13 +123,8 @@ namespace VisualAlgo.Managers.UI.StartMenu
         /// </summary>
         private static readonly NodeTone[] StartNodeTones =
         {
-            NodeTone.Black,
-            NodeTone.Purple,
-            NodeTone.Black,
-            NodeTone.Black,
-            NodeTone.Black,
-            NodeTone.Purple,
-            NodeTone.Purple
+            NodeTone.Purple, NodeTone.Black, NodeTone.Black, NodeTone.Black,
+            NodeTone.Purple, NodeTone.Black, NodeTone.Purple
         };
 
         /// <summary>
@@ -156,13 +132,8 @@ namespace VisualAlgo.Managers.UI.StartMenu
         /// </summary>
         private static readonly NodeTone[] EndNodeTones =
         {
-            NodeTone.Black,
-            NodeTone.Purple,
-            NodeTone.Black,
-            NodeTone.Black,
-            NodeTone.Purple,
-            NodeTone.Black,
-            NodeTone.Black
+            NodeTone.Purple, NodeTone.Black, NodeTone.Black, NodeTone.Purple,
+            NodeTone.Black, NodeTone.Black, NodeTone.Purple
         };
 
         /// <summary>
@@ -170,12 +141,7 @@ namespace VisualAlgo.Managers.UI.StartMenu
         /// </summary>
         private static readonly TreeEdge[] StartEdges =
         {
-            new(0, 1),
-            new(0, 2),
-            new(1, 3),
-            new(1, 4),
-            new(3, 5),
-            new(2, 6)
+            new(3, 5), new(3, 4), new(4, 1), new(4, 2), new(2, 0), new(2, 6)
         };
 
         /// <summary>
@@ -183,12 +149,7 @@ namespace VisualAlgo.Managers.UI.StartMenu
         /// </summary>
         private static readonly TreeEdge[] EndEdges =
         {
-            new(1, 3),
-            new(1, 0),
-            new(3, 5),
-            new(3, 4),
-            new(0, 6),
-            new(0, 2)
+            new(4, 3), new(4, 2), new(3, 5), new(3, 1), new(2, 0), new(2, 6)
         };
 
         /// <summary>
@@ -201,12 +162,24 @@ namespace VisualAlgo.Managers.UI.StartMenu
             Rect rect = rectTransform.rect;
             Vector2[] nodePositions = BuildInterpolatedPositions(rect);
             Color tintedEdgeColor = edgeColor * color;
-            float startEdgeAlpha = 1f - SmoothStep(Mathf.Clamp01(progress * edgeExitSpeed));
-            float endEdgeAlpha = SmoothStep(Mathf.Clamp01(progress * edgeEnterSpeed));
-
-            for (int i = 0; i < StartEdges.Length; i++) AddEdge(vh, nodePositions, StartEdges[i], tintedEdgeColor, startEdgeAlpha);
-            for (int i = 0; i < EndEdges.Length; i++) AddEdge(vh, nodePositions, EndEdges[i], tintedEdgeColor, endEdgeAlpha);
+            // 左旋中旧连接淡出、新连接淡入。共有连线只绘制一次，避免闪烁。
+            // 3—4 虽然父子方向反转，但仍是同一条可见线段。
+            float blend = SmoothStep(progress);
+            for (int i = 0; i < StartEdges.Length; i++)
+                AddEdge(vh, nodePositions, StartEdges[i], tintedEdgeColor,
+                    ContainsSegment(EndEdges, StartEdges[i]) ? 1f : 1f - blend);
+            for (int i = 0; i < EndEdges.Length; i++)
+                if (!ContainsSegment(StartEdges, EndEdges[i]))
+                    AddEdge(vh, nodePositions, EndEdges[i], tintedEdgeColor, blend);
             for (int i = 0; i < nodePositions.Length; i++) AddNode(vh, nodePositions[i], i);
+        }
+
+        private static bool ContainsSegment(TreeEdge[] edges, TreeEdge target)
+        {
+            foreach (var edge in edges)
+                if ((edge.From == target.From && edge.To == target.To) ||
+                    (edge.From == target.To && edge.To == target.From)) return true;
+            return false;
         }
 
         /// <summary>
@@ -225,7 +198,14 @@ namespace VisualAlgo.Managers.UI.StartMenu
             {
                 Vector2 start = ResolvePoint(rect, StartNodeAnchors[i], left, right, bottom, top);
                 Vector2 end = ResolvePoint(rect, EndNodeAnchors[i], left, right, bottom, top);
-                positions[i] = Vector2.Lerp(start, end, SmoothStep(progress));
+                // 只对完整行程缓动一次，避免两段缓动在中点都减速到零。
+                // 二次曲线仍经过原旋转交接位置，且中点前后速度连续。
+                Vector2 middle = (start + end) * 0.5f;
+                if (i == 3 || i == 4) middle.y = Mathf.Lerp(bottom, top, 0.69f);
+                Vector2 control = 2f * middle - 0.5f * (start + end);
+                float t = SmoothStep(progress);
+                positions[i] = Vector2.Lerp(Vector2.Lerp(start, control, t),
+                    Vector2.Lerp(control, end, t), t);
             }
 
             return positions;
@@ -255,9 +235,8 @@ namespace VisualAlgo.Managers.UI.StartMenu
         /// <returns>当前节点颜色。</returns>
         private Color ResolveNodeColor(int nodeIndex)
         {
-            Color startColor = ResolveToneColor(StartNodeTones[nodeIndex]);
-            Color endColor = ResolveToneColor(EndNodeTones[nodeIndex]);
-            return Color.Lerp(startColor, endColor, SmoothStep(progress));
+            return Color.Lerp(ResolveToneColor(StartNodeTones[nodeIndex]),
+                ResolveToneColor(EndNodeTones[nodeIndex]), SmoothStep(progress));
         }
 
         /// <summary>
@@ -267,9 +246,9 @@ namespace VisualAlgo.Managers.UI.StartMenu
         /// <returns>0 表示黑色，1 表示紫色。</returns>
         private float ResolvePurpleWeight(int nodeIndex)
         {
-            float startWeight = StartNodeTones[nodeIndex] == NodeTone.Purple ? 1f : 0f;
-            float endWeight = EndNodeTones[nodeIndex] == NodeTone.Purple ? 1f : 0f;
-            return Mathf.Lerp(startWeight, endWeight, SmoothStep(progress));
+            float start = StartNodeTones[nodeIndex] == NodeTone.Purple ? 1f : 0f;
+            float end = EndNodeTones[nodeIndex] == NodeTone.Purple ? 1f : 0f;
+            return Mathf.Lerp(start, end, SmoothStep(progress));
         }
 
         /// <summary>
